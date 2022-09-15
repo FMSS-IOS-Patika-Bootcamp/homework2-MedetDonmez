@@ -9,6 +9,7 @@ import UIKit
 
 class MainViewController: UIViewController {
     
+    var pokemonManager = PokemonManager()
     
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
@@ -20,35 +21,27 @@ class MainViewController: UIViewController {
         collectionView.delegate = self
         collectionView.collectionViewLayout = UICollectionViewFlowLayout()
         
+        
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToPokemons",
+           let secondViewController = segue.destination as? SecondViewController {
+            secondViewController.delegate = self
+        }
+    }
+}
+
+//MARK: - SecondViewControllerDelegate
+
+//to pass data we need this delegate method.
+
+extension MainViewController: SecondViewControllerDelegate {
+    func getPokemons() -> [Pokemon] {
+        return pokemonManager.pokemons
     }
     
-    //This function update our pokemon list by the selected type.
-    func updateList(selectedType: String){
-        webLink = selectedType
-        
-        switch selectedType {
-        case "Water":
-            expectedTitle = "WATER POKEMONS"
-            pokemons = waterPokemons
-        case "Fire":
-            expectedTitle = "FIRE POKEMONS"
-            pokemons = firePokemons
-        case "Grass":
-            expectedTitle = "GRASS POKEMONS"
-            pokemons = grassPokemons
-        case "Electric":
-            expectedTitle = "ELECTRIC POKEMONS"
-            pokemons = electricPokemons
-        case "Psychic":
-            expectedTitle = "PSYCHIC POKEMONS"
-            pokemons = psychicPokemons
-        case "Poison":
-            expectedTitle = "POISON POKEMONS"
-            pokemons = poisonPokemons
-        default:
-            print("did nothing")
-            
-        }
+    func getTitle() -> String {
+        return pokemonManager.expectedTitle
     }
 }
 
@@ -59,7 +52,7 @@ extension MainViewController: UICollectionViewDataSource {
     //number of items is equal to our pokemons list.
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return pokemons.count
+        return pokemonManager.pokemons.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -67,7 +60,7 @@ extension MainViewController: UICollectionViewDataSource {
         //Registering our cell here.
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PokemonCollectionViewCell", for: indexPath) as! PokemonCollectionViewCell
         
-        cell.setup(with: pokemons[indexPath.row]) // we set the cell with our setup func.
+        cell.setup(with: pokemonManager.pokemons[indexPath.row]) // we set the cell with our setup func.
         return cell
     }
 }
@@ -99,8 +92,10 @@ extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         //updating list before go to next view controller.
-        updateList(selectedType: pokemons[indexPath.row].title)
+        pokemonManager.uupdateList(selectedType: pokemonManager.pokemons[indexPath.row].title)
         
         self.performSegue(withIdentifier: "goToPokemons", sender: self)
     }
 }
+
+

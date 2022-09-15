@@ -11,6 +11,8 @@ import Foundation
 
 class WebViewController: UIViewController {
     
+    var webLink = ""
+    
     @IBOutlet weak var webView: WKWebView!
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -10,14 +10,18 @@ import CollectionViewPagingLayout
 
 class SecondViewController: UIViewController,UICollectionViewDelegateFlowLayout {
     
+    var delegate: SecondViewControllerDelegate?
+    var pokemons = [Pokemon]()
+    var webLink = ""//MARK: - UICollectionViewDataSource
+    
     @IBOutlet weak var navigationBar: UINavigationItem!
     @IBOutlet weak var collectionView: UICollectionView!
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = expectedTitle
+        title = delegate?.getTitle()
+        update()
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -25,12 +29,28 @@ class SecondViewController: UIViewController,UICollectionViewDelegateFlowLayout 
         let layout = CollectionViewPagingLayout()
         collectionView.collectionViewLayout = layout
         layout.numberOfVisibleItems = nil
+
+
+    }
+
+    func update(){
+        pokemons = delegate!.getPokemons()
     }
     
     @IBAction func infoButton(_ sender: UIButton) {
         performSegue(withIdentifier:"goToWeb", sender: self)
     }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToWeb",
+           let webViewController = segue.destination as? WebViewController {
+            webViewController.webLink = self.webLink
+        }
+    }
 }
+
+
 
 //MARK: - UICollectionViewDataSource
 
