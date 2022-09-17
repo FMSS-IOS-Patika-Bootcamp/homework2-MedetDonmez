@@ -107,6 +107,7 @@ extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         //updating list before go to next view controller.
+        pokemonManager.pokemons = pokemonManager.basePokemons
         pokemonManager.uupdateList(selectedType: pokemonManager.pokemons[indexPath.row].title)
         
         self.performSegue(withIdentifier: "goToPokemons", sender: self)

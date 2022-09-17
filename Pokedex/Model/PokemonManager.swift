@@ -17,6 +17,16 @@ struct PokemonManager {
     
     var expectedTitle = ""
     
+    var basePokemons: [Pokemon] = [
+        Pokemon(title: "Fire", image: #imageLiteral(resourceName: "Fire-1")),
+        Pokemon(title: "Water", image: #imageLiteral(resourceName: "water-1")),
+        Pokemon(title: "Grass", image: #imageLiteral(resourceName: "grass-6")),
+        Pokemon(title: "Electric", image: #imageLiteral(resourceName: "electric-6")),
+        Pokemon(title: "Psychic", image: #imageLiteral(resourceName: "psychic-2")),
+        Pokemon(title: "Poison", image: #imageLiteral(resourceName: "poison-3"))
+    ]
+    
+    //this array to be changed by selected type in the first screen.
     var pokemons: [Pokemon] = [
         Pokemon(title: "Fire", image: #imageLiteral(resourceName: "Fire-1")),
         Pokemon(title: "Water", image: #imageLiteral(resourceName: "water-1")),
