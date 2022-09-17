@@ -11,10 +11,22 @@ class MainViewController: UIViewController {
     
     var pokemonManager = PokemonManager()
     
+    @IBOutlet weak var appLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "POKEDEX 1.0"
+        
+        appLabel.text = ""
+        var charIndex = 0.0
+        let titleText = "POKEDEX"
+        for letter in titleText {
+            Timer.scheduledTimer(withTimeInterval: 0.12 * charIndex, repeats: false) { (timer) in
+                self.appLabel.text?.append(letter)
+            }
+            charIndex += 1
+        }
+        
         
         //we set these values to manage our collection view.
         collectionView.dataSource = self
@@ -61,6 +73,9 @@ extension MainViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PokemonCollectionViewCell", for: indexPath) as! PokemonCollectionViewCell
         
         cell.setup(with: pokemonManager.pokemons[indexPath.row]) // we set the cell with our setup func.
+        cell.layer.borderWidth = 4
+        cell.layer.borderColor = #colorLiteral(red: 0.3294117647, green: 0.231372549, blue: 0.3294117647, alpha: 1)
+        cell.layer.cornerRadius = 8
         return cell
     }
 }

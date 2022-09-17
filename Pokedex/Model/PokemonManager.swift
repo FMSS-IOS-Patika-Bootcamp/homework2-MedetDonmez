@@ -84,8 +84,7 @@ struct PokemonManager {
     
     //function that updates our list
     mutating func uupdateList(selectedType: String){
-        webLink = selectedType
-        
+ 
         switch selectedType {
         case "Water":
             expectedTitle = "WATER POKEMONS"

@@ -12,14 +12,15 @@ class SecondViewController: UIViewController,UICollectionViewDelegateFlowLayout 
     
     var delegate: SecondViewControllerDelegate?
     var pokemons = [Pokemon]()
-    var webLink = ""//MARK: - UICollectionViewDataSource
+    var webLink = ""
     
+    @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var navigationBar: UINavigationItem!
     @IBOutlet weak var collectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        infoButton.layer.cornerRadius = 8
         title = delegate?.getTitle()
         update()
         collectionView.dataSource = self
@@ -29,6 +30,7 @@ class SecondViewController: UIViewController,UICollectionViewDelegateFlowLayout 
         let layout = CollectionViewPagingLayout()
         collectionView.collectionViewLayout = layout
         layout.numberOfVisibleItems = nil
+        layout.delegate = self
 
 
     }
@@ -64,19 +66,21 @@ extension SecondViewController: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         //Registering our cell here.
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"ThirdCollectionViewCell", for: indexPath) as! SecondCollectionViewCell
-        cell.setup(with: pokemons[indexPath.row]) // we set the cell with our setup func.
-        webLink = pokemons[indexPath.row].title
+        cell.setup(with: pokemons[indexPath.row])
+        // we set the cell with our setup func.
+        cell.layer.cornerRadius = 20
         return cell
     }
 }
 
-//MARK: - UICollectionViewDelegate
+//MARK: - CollectionViewPagingLayoutDelegate
 
-extension SecondViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//this delegate for update our weblink by page we are currently on.
+extension SecondViewController: CollectionViewPagingLayoutDelegate {
+    
+    func onCurrentPageChanged(layout: CollectionViewPagingLayout, currentPage: Int) {
         
-        //Specify the link for the selected pokemon.
-        webLink = pokemons[indexPath.row].title
+        webLink = pokemons[currentPage].title
     }
 }
 
